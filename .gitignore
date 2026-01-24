@@ -1,0 +1,17 @@
+/target/
+
+.idea/
+*.iml
+
+*~
+*.swp
+*.swo
+
+.DS_Store
+Thumbs.db
+
+.env
+.env*.local
+
+**/*.rs.bk
+debug/
