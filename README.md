@@ -1,9 +1,9 @@
-#### Rust Secure Transport Format
-
 <div align="center">
   <img src="https://raw.githubusercontent.com/warchs/warchs/refs/heads/main/image/rstf.png" width="400" alt="Logo">
 
   <br />
+
+  ## Rust Secure Transport Format
 
   [![Release](https://img.shields.io/github/v/release/aarchiev/rstf-rust)](https://github.com/aarchiev/rstf-rust/releases)
   [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
