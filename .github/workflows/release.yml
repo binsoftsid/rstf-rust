@@ -57,16 +57,18 @@ jobs:
             binary_name: rstf
             asset_name: rstf-macos-arm64
             use_cross: false
+          # --- ANDROID FIXED ---
+          # Kita kembalikan ke 'use_cross: true' karena lebih stabil untuk CI
           - os: ubuntu-latest
             target: aarch64-linux-android
             binary_name: rstf
             asset_name: rstf-android-arm64
-            use_cross: false
+            use_cross: true 
           - os: ubuntu-latest
             target: x86_64-linux-android
             binary_name: rstf
             asset_name: rstf-android-amd64
-            use_cross: false
+            use_cross: true
 
     steps:
       - name: Checkout code
@@ -86,16 +88,7 @@ jobs:
         if: contains(matrix.target, 'musl')
         run: sudo apt-get update && sudo apt-get install -y musl-tools
 
-      - name: Install Android NDK
-        if: contains(matrix.target, 'android')
-        uses: android-actions/setup-android@v3
-        with:
-          packages: 'ndk;25.2.9519653'
-
-      - name: Install cargo-ndk
-        if: contains(matrix.target, 'android')
-        run: cargo install cargo-ndk
-
+      # Setup Cross jika diperlukan (Termasuk untuk Android sekarang)
       - name: Setup Cross
         if: matrix.use_cross
         run: |
@@ -103,16 +96,13 @@ jobs:
             cargo install cross --git https://github.com/cross-rs/cross
           fi
 
+      # Build Command yang Disederhanakan
+      # Tidak perlu install NDK manual, 'cross' akan menanganinya via Docker
       - name: Build
         shell: bash
         run: |
-          TARGET="${{ matrix.target }}"
-          if [[ "$TARGET" == *"android"* ]]; then
-            cargo ndk -t $TARGET -p 24 build --release
-          else
-            BUILD_CMD=${{ matrix.use_cross && 'cross' || 'cargo' }}
-            $BUILD_CMD build --release --target $TARGET
-          fi
+          BUILD_CMD=${{ matrix.use_cross && 'cross' || 'cargo' }}
+          $BUILD_CMD build --release --target ${{ matrix.target }}
 
       - name: Post-process binary
         shell: bash
@@ -129,3 +119,4 @@ jobs:
           name: binary-${{ matrix.asset_name }}
           path: ${{ matrix.asset_name }}
           retention-days: 1
+
