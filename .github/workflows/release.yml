@@ -13,6 +13,7 @@ jobs:
     name: Build for ${{ matrix.asset_name }}
     runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false
       matrix:
         include:
           - os: ubuntu-latest
@@ -59,7 +60,7 @@ jobs:
             target: aarch64-linux-android
             binary_name: rstf
             asset_name: rstf-android-arm64
-            use_cross: true
+            use_cross: true 
           - os: ubuntu-latest
             target: x86_64-linux-android
             binary_name: rstf
@@ -83,12 +84,6 @@ jobs:
       - name: Install dependencies (Linux)
         if: contains(matrix.target, 'musl')
         run: sudo apt-get update && sudo apt-get install -y musl-tools
-
-      - name: Install Android NDK
-        if: contains(matrix.target, 'android')
-        uses: android-actions/setup-android@v3
-        with:
-          packages: 'ndk;25.2.9519653'
 
       - name: Setup Cross
         if: matrix.use_cross
@@ -117,3 +112,4 @@ jobs:
         with:
           files: ${{ matrix.asset_name }}
           fail_on_unmatched_files: true
+
