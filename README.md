@@ -280,6 +280,12 @@ Your contributions keep the **Rust ecosystem thriving**—thank you! If you've c
 
 ---
 
+## Ongoing Feature
+* **split into volumes**
+* **auto-generate password**
+ 
+---
+
 ## License
 This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
 
